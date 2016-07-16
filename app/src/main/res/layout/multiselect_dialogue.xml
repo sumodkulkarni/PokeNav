@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <EditText
+        android:id="@+id/ed_multiSelect_filter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/action_search"
+        android:inputType="text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <requestFocus />
+    </EditText>
+
+    <ListView
+        android:id="@+id/multiSelect_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ed_multiSelect_filter"
+        android:layout_marginTop="5dp"
+        android:cacheColorHint="@null"
+        android:fadeScrollbars="true"
+        android:fastScrollEnabled="true"
+        android:textFilterEnabled="true" />
+
+    <TextView
+        android:id="@+id/tv_searchNotFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#EE0000"
+        android:visibility="gone" />
+
+</RelativeLayout>
