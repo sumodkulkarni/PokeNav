@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,7 +23,8 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
 
-    CoordinatorLayout coordinatorLayout;
+    private CoordinatorLayout coordinatorLayout;
+    private FloatingActionButton fabAddPokemon;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -53,6 +55,14 @@ public class HomeFragment extends Fragment {
             snackbar.show();
             PrefManager.putPrefs(getContext(), PrefManager.PREF_MAIN_ACT_LAUNCH, false);
         }
+
+        fabAddPokemon = (FloatingActionButton) view.findViewById(R.id.fabAddPokemon);
+        fabAddPokemon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
