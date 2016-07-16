@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "857526216133",
+    "project_id": "firebase-pokenav"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857526216133:android:7ad339afd643a9e7",
+        "android_client_info": {
+          "package_name": "com.sumod.pokenav"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857526216133-8g6nsroo34togqse1rajs0lvn2etkf4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sumod.pokenav",
+            "certificate_hash": "3B924E291F8406B3DC1F65F2F257EBE3070F5F63"
+          }
+        },
+        {
+          "client_id": "857526216133-fg2odpg95jsa7s3srt2nsglndbqnptqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSEGH8FAltQpwMuIHiPP9nPwGm0aFJAYI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
