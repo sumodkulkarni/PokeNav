@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.sumod.pokenav.utils.PrefManager;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
-    private LinearLayout linearLayout;
+    private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
 
@@ -31,15 +32,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        linearLayout = (LinearLayout) findViewById(R.id.main_linearLayout);
+        PrefManager.putPrefs(this, PrefManager.PREF_MAIN_ACT_LAUNCH, true);
 
-        Snackbar snackbar = Snackbar
-                .make(linearLayout, "Welcome, " + PrefManager.getPrefs(this, PrefManager.PREF_USER_NAME, String.class) + "!",
-                        Snackbar.LENGTH_LONG);
-        snackbar.show();
-
+        Log.d(TAG, String.valueOf((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_MAIN_ACT_LAUNCH, Boolean.class)));
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -47,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
-
 
         // display the first navigation drawer view on app launch
         displayView(0);
@@ -109,5 +104,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             // set the toolbar title
             getSupportActionBar().setTitle(title);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

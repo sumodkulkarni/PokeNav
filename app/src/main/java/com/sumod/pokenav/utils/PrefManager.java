@@ -22,6 +22,7 @@ public class PrefManager {
     public static String PREF_EMAIL = "pref_email";
     public static String PREF_USER_PROFILE_PICTURE = "pref_user_profile_pic";
     public static String PREF_REGISTRATION_DONE = "pref_registration_done";
+    public static String PREF_MAIN_ACT_LAUNCH = "pref_main_activity_launch";
     public static String PREF_FIRST_RUN = "pref_first_run";
     public static String PREF_APP_VERSION = "pref_app_version";
 
