@@ -6,21 +6,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.sumod.pokenav.R;
+import com.sumod.pokenav.fragments.ChatFragment;
 import com.sumod.pokenav.fragments.FragmentDrawer;
-import com.sumod.pokenav.fragments.FriendsFragment;
 import com.sumod.pokenav.fragments.HomeFragment;
-import com.sumod.pokenav.fragments.MessagesFragment;
+import com.sumod.pokenav.fragments.MapsFragment;
 import com.sumod.pokenav.utils.PrefManager;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
@@ -89,15 +86,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
-                title = "Map";
+                title = getString(R.string.title_home);
                 break;
             case 1:
-                fragment = new FriendsFragment();
-                title = "Submit";
+                fragment = new MapsFragment();
+                title = getString(R.string.title_map);
                 break;
             case 2:
-                fragment = new MessagesFragment();
-                title = "Chat";
+                fragment = new ChatFragment();
+                title = getString(R.string.title_chat);
                 break;
             default:
                 break;
