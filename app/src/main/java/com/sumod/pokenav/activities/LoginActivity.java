@@ -1,10 +1,13 @@
 package com.sumod.pokenav.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +36,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleApiClient mGoogleApiClient;
     private RelativeLayout relativeLayout;
     private SignInButton mGoogleSignInButton;
+
+    private static final int REQUEST_CODE_FINE_LOCATION = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +106,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            Intent intent = new Intent(this, MainActivity.class);
             PrefManager.putPrefs(this, PrefManager.PREF_USER_NAME, acct.getDisplayName());
             PrefManager.putPrefs(this, PrefManager.PREF_EMAIL, acct.getEmail());
             PrefManager.putPrefs(this, PrefManager.PREF_REGISTRATION_DONE, true);
             PrefManager.putPrefs(this, PrefManager.PREF_USER_PROFILE_PICTURE, acct.getPhotoUrl());
-            Log.d(TAG, String.valueOf(acct.getPhotoUrl()));
-            startActivity(intent);
-            finish();
+            askLocationPermissions();
         } else {
             // Signed out, show unauthenticated UI.
             Toast.makeText(this, "Oops! Somethings not right. Please try again later", Toast.LENGTH_SHORT).show();
@@ -122,6 +124,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .make(relativeLayout, "Something's wrong. Please try after sometime", Snackbar.LENGTH_LONG);
         snackbar.show();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_FINE_LOCATION){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private boolean isInternetAvailable(){
@@ -149,6 +160,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         return true;
+    }
+
+    private void askLocationPermissions(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_FINE_LOCATION);
+
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            finish();
+        }
     }
 
 }
