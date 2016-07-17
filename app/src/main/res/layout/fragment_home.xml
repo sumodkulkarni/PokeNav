@@ -1,7 +1,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="fragments.HomeFragment"
     android:id="@+id/frag_home_coordinatorLayout">
@@ -29,13 +31,47 @@
         android:text="Submit PokeMon Here"
         android:layout_gravity="center" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddPokemon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        style="@style/floating_action_button"
-        android:src="@drawable/ic_add_white_24dp" />
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu_red"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        app:layout_behavior="com.sumod.pokenav.views.FloatingActionMenuBehavior"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_backgroundColor="#ccffffff"
+        app:menu_colorNormal="@color/colorPrimary">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pokemon_logo"
+            fab:fab_size="mini"
+            fab:fab_label="Pokemon"
+            app:fab_colorNormal="@color/colorPrimary"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pokemongym_logo"
+            fab:fab_size="mini"
+            fab:fab_label="Gym"
+            app:fab_colorNormal="@color/colorPrimary"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pokestop_logo"
+            fab:fab_size="mini"
+            fab:fab_label="PokeStop"
+            app:fab_colorNormal="@color/colorPrimary"/>
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

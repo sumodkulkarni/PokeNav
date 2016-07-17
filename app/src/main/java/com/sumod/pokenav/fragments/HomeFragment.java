@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.utils.PrefManager;
 
@@ -24,7 +25,10 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     private CoordinatorLayout coordinatorLayout;
-    private FloatingActionButton fabAddPokemon;
+    private FloatingActionMenu fabAdd;
+    private FloatingActionButton fab1;
+    private FloatingActionButton fab2;
+    private FloatingActionButton fab3;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -56,13 +60,20 @@ public class HomeFragment extends Fragment {
             PrefManager.putPrefs(getContext(), PrefManager.PREF_MAIN_ACT_LAUNCH, false);
         }
 
-        fabAddPokemon = (FloatingActionButton) view.findViewById(R.id.fabAddPokemon);
-        fabAddPokemon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fabAdd = (FloatingActionMenu) view.findViewById(R.id.menu_red);
+        fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) view.findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) view.findViewById(R.id.fab3);
 
-            }
-        });
+        fabAdd.setClosedOnTouchOutside(true);
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
     }
 
     @Override
