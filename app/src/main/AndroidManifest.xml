@@ -14,21 +14,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDSEGH8FAltQpwMuIHiPP9nPwGm0aFJAYI"/>
+            android:value="AIzaSyDSEGH8FAltQpwMuIHiPP9nPwGm0aFJAYI" />
 
-        <activity android:name=".activities.MainActivity"/>
-
-        <activity
-            android:name=".activities.LoginActivity">
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.AddActivity_"></activity>
     </application>
 
 </manifest>
