@@ -1,4 +1,4 @@
-package com.sumod.pokenav.views;
+package com.sumod.pokenav.views.SearchableSpinner;
 
 
 import android.annotation.SuppressLint;

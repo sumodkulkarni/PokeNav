@@ -1,4 +1,4 @@
-package com.sumod.pokenav.views;
+package com.sumod.pokenav.views.SearchableSpinner;
 
 
 import android.app.AlertDialog;
@@ -24,48 +24,46 @@ import java.util.List;
 import lombok.Getter;
 
 
-public class SearchableMultiSelectionSpinner extends Spinner implements OnCancelListener {
-    @Getter private List<CheckListItem> checkListItems;
+public class SearchableSingleSelectionSpinner extends Spinner implements OnCancelListener {
+    @Getter private List<CheckListItem> checkListItems = new ArrayList<>();
     private String defaultText = "";
-    private SearchableMultiSelectionSpinnerListener listener;
-    SearchableMultiSelectSpinnerAdapter adapter;
+    private SearchableSingleSelectionSpinnerListener listener;
+    SearchableSingleSelectSpinnerAdapter adapter;
+    private AlertDialog.Builder builder;
+    private OnCancelListener onCancelListener;
 
 
-    public SearchableMultiSelectionSpinner(Context context) {
+    public SearchableSingleSelectionSpinner(Context context) {
         super(context);
     }
 
 
-    public SearchableMultiSelectionSpinner(Context arg0, AttributeSet arg1) {
+    public SearchableSingleSelectionSpinner(Context arg0, AttributeSet arg1) {
         super(arg0, arg1);
     }
 
 
-    public SearchableMultiSelectionSpinner(Context arg0, AttributeSet arg1, int arg2) {
+    public SearchableSingleSelectionSpinner(Context arg0, AttributeSet arg1, int arg2) {
         super(arg0, arg1, arg2);
     }
 
 
-    public void setSearchableMultiSelectionSpinnerListener(SearchableMultiSelectionSpinnerListener listener) {
+    public void setSearchableSingleSelectionSpinnerListener(SearchableSingleSelectionSpinnerListener listener) {
         this.listener = listener;
     }
 
 
     void updateSpinnerText() {
-        StringBuffer spinnerBuffer = new StringBuffer();
+        String spinnerText = defaultText;
 
-        for (int i = 0; i < checkListItems.size(); i++) {
-            if (checkListItems.get(i).isChecked()) {
-                spinnerBuffer.append(checkListItems.get(i).getName());
-                spinnerBuffer.append(", ");
+        if (this.adapter != null) {
+            for (int i = 0; i < this.adapter.arrayList.size(); i++) {
+                if (this.adapter.arrayList.get(i).isChecked()) {
+                    spinnerText = this.adapter.arrayList.get(i).getName();
+                    break;
+                }
             }
         }
-
-        String spinnerText = "";
-        spinnerText = spinnerBuffer.toString();
-        if (spinnerText.length() > 2)
-            spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
-        else spinnerText = defaultText;
 
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(getContext(),
                 R.layout.multiselect_spinner_textview,
@@ -91,7 +89,7 @@ public class SearchableMultiSelectionSpinner extends Spinner implements OnCancel
 
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder = new AlertDialog.Builder(getContext());
         builder.setTitle(defaultText);
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -100,15 +98,14 @@ public class SearchableMultiSelectionSpinner extends Spinner implements OnCancel
         builder.setView(view);
 
         final ListView listView = (ListView) view.findViewById(R.id.multiSelect_listView);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setFastScrollEnabled(false);
 
-        adapter = new SearchableMultiSelectSpinnerAdapter(getContext(), checkListItems);
+        adapter = new SearchableSingleSelectSpinnerAdapter(getContext(), checkListItems);
         listView.setAdapter(adapter);
 
         EditText editText = (EditText) view.findViewById(R.id.ed_multiSelect_filter);
         editText.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 adapter.getFilter().filter(s.toString());
@@ -132,21 +129,19 @@ public class SearchableMultiSelectionSpinner extends Spinner implements OnCancel
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-//				items = (ArrayList<KeyPairBoolData>) adapter.arrayList;
-
                         Log.i("TAG", " ITEMS : " + checkListItems.size());
                         dialog.cancel();
                     }
                 });
 
         builder.setOnCancelListener(this);
-        builder.show();
+        this.adapter.alertDialog = builder.show();
         return true;
     }
 
 
     public void setItems(List<CheckListItem> items, String allText, int position,
-                         SearchableMultiSelectionSpinnerListener listener) {
+                         SearchableSingleSelectionSpinnerListener listener) {
         this.checkListItems = items;
         this.defaultText = allText;
         this.listener = listener;
@@ -165,40 +160,21 @@ public class SearchableMultiSelectionSpinner extends Spinner implements OnCancel
     }
 
 
-    public interface SearchableMultiSelectionSpinnerListener {
+    public interface SearchableSingleSelectionSpinnerListener {
         void onItemsSelected(List<CheckListItem> items);
     }
 
 
-    public SearchableMultiSelectSpinnerAdapter getAdapter() {
+    public SearchableSingleSelectSpinnerAdapter getAdapter() {
         return adapter;
     }
 
 
-    public List<Integer> getSelectedItemsId() {
-        List<Integer> selectedItemsIds = new ArrayList<>();
-
-        if (checkListItems == null) return new ArrayList<>();
-
+    public CheckListItem getSelectedItem() {
         for (int i = 0; i < checkListItems.size(); i++) {
-            if (checkListItems.get(i).isChecked())
-                selectedItemsIds.add(checkListItems.get(i).getId());
+            if (checkListItems.get(i).isChecked()) return checkListItems.get(i);
         }
-
-        return selectedItemsIds;
-    }
-
-    public boolean isNothingSelected(){
-
-        if (checkListItems == null) return true;
-
-        for (int i=0; i < checkListItems.size(); i++){
-            if (checkListItems.get(i).isChecked()){
-                return true;
-            }
-        }
-
-        return false;
+        return null;
     }
 }
 
