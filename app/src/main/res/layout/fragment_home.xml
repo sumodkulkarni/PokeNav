@@ -53,7 +53,7 @@
             android:src="@drawable/pokemon_logo"
             fab:fab_size="mini"
             fab:fab_label="Pokemon"
-            app:fab_colorNormal="@color/colorPrimary"/>
+            app:fab_colorNormal="@color/colorAccent"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab2"
@@ -62,7 +62,7 @@
             android:src="@drawable/pokemongym_logo"
             fab:fab_size="mini"
             fab:fab_label="Gym"
-            app:fab_colorNormal="@color/colorPrimary"/>
+            app:fab_colorNormal="@color/colorAccent"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab3"
@@ -71,7 +71,7 @@
             android:src="@drawable/pokestop_logo"
             fab:fab_size="mini"
             fab:fab_label="PokeStop"
-            app:fab_colorNormal="@color/colorPrimary"/>
+            app:fab_colorNormal="@color/colorAccent"/>
     </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>
