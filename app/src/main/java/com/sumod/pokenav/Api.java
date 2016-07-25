@@ -26,10 +26,10 @@ public class Api {
         User currentUser = App.get(User.class);
 
         // Create a JWToken using the user'id as the subject
-        final String jwtToken = Jwts.builder()
+        /*final String jwtToken = Jwts.builder()
                 .setSubject(currentUser.getId())
                 .signWith(SignatureAlgorithm.HS512, App.JWT_KEY)
-                .compact();
+                .compact();*/
 
         client.addInterceptor(new Interceptor() {
             @Override
@@ -38,7 +38,7 @@ public class Api {
 
                 // Customize the request
                 Request request = original.newBuilder()
-                        .header("Authorization", "JWT " + jwtToken)
+//                        .header("Authorization", "JWT " + jwtToken)
                         .header("Accept", "application/json")
                         .method(original.method(), original.body())
                         .build();

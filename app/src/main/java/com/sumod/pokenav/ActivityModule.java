@@ -22,12 +22,14 @@ import retrofit2.Retrofit;
                 User.class,
 
                 App.class,
+
         },
         library = true
 )
 public class ActivityModule {
     private final Context context;
     private final Gson gson;
+    public final static String CURRENT_USER = "current_user";
 
 
     public ActivityModule(Context context) {
@@ -54,7 +56,7 @@ public class ActivityModule {
 
     @Provides
     @Singleton
-    public User providesUser() {
+    public User providesCurrentUser() {
         return new User();
     }
 
