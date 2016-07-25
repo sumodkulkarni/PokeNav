@@ -2,7 +2,6 @@ package com.sumod.pokenav;
 
 
 import android.app.Application;
-import android.util.Log;
 
 import com.sumod.pokenav.model.PokemonHistory;
 
@@ -15,7 +14,8 @@ import retrofit2.Response;
 
 
 public class App extends Application {
-    public final static String HOST = "http://192.168.1.101:3000/";
+    //    public final static String HOST = "http://192.168.1.101:3000/";
+    public final static String HOST = "http://pokenav.schoolofandroid.com/";
     public final static String JWT_KEY = "c3Vtb2RrdWxrYXJuaQ==";
 
 
@@ -39,8 +39,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        App.inject(this);
-
         applicationGraph = ObjectGraph.create().plus(new ActivityModule(this));
         App.inject(this);
 
@@ -53,7 +51,7 @@ public class App extends Application {
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("a[[", t.getMessage());
+//                Log.e("a[[", t.getMessage());
             }
         });
     }

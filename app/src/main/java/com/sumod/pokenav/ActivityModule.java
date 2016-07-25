@@ -19,6 +19,7 @@ import retrofit2.Retrofit;
 @Module(
         injects = {
                 LoginActivity.class,
+                User.class,
 
                 App.class,
         },
