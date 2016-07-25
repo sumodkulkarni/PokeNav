@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 public class User extends BaseModel {
     String email;
-    String phoneNumber;
     String displayName;
     String avatarUrl;
 
