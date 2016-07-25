@@ -37,7 +37,12 @@ apt {
 ext {
     AAVersion = "3.3.2"
     supportVersion = "23.1.1"
+    daggerVersion = "1.2.2"
+    googleAnalyticsVersion = "8.3.0"
     lombokVersion = "1.16.6"
+    mapsVersion = "8.3.0"
+    okHttpVersion = "3.0.0-RC1"
+    retrofit2Version = "2.0.0-beta3"
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -51,18 +56,31 @@ dependencies {
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 
-    // Library for Floating Action Buttons
+    // Dagger, A fast dependency injector for Android and Java
+    compile "com.squareup.dagger:dagger:$daggerVersion"
+    provided "com.squareup.dagger:dagger-compiler:$daggerVersion"
 
-    
+    // Retrofit 2 & OkHttp
+    compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    compile("com.squareup.retrofit2:retrofit:$retrofit2Version") {
+        // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
+        exclude module: 'okhttp'
+    }
+    compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+
+    // Library for Floating Action Buttons
+    compile 'com.github.clans:fab:1.6.4'
+
+    // JSON Web tokens for authenticating with the server
+    compile 'io.jsonwebtoken:jjwt:0.6.0'
 
     // Project Lombok
     compile "org.projectlombok:lombok:$lombokVersion"
 
-    compile 'com.google.android.gms:play-services-auth:8.3.0'
-    compile 'com.google.android.gms:play-services-location:8.3.0'
-    compile 'com.google.android.gms:play-services-maps:8.3.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.github.clans:fab:1.6.4'
+    compile "com.google.android.gms:play-services-auth:$mapsVersion"
+    compile "com.google.android.gms:play-services-location:$mapsVersion"
+    compile "com.google.android.gms:play-services-maps:$mapsVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -3,10 +3,7 @@ package com.sumod.pokenav.utils;
 /**
  * Created by sumodkulkarni on 16/7/16.
  */
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 
 public class PrefManager {
@@ -26,14 +23,15 @@ public class PrefManager {
     public static String PREF_FIRST_RUN = "pref_first_run";
     public static String PREF_APP_VERSION = "pref_app_version";
 
+
     /**
      * This function returns the Shared_Prefs for particular key
+     *
      * @param context Context of the android application running (getApplicationContext()) will help
-     * @param key The key for the desired preference
-     * @param object The class of the desired preference value (e.g: String.class)
+     * @param key     The key for the desired preference
+     * @param object  The class of the desired preference value (e.g: String.class)
      * @return Object of the type of preference
      */
-
     public static Object getPrefs(Context context, String key, Class object) {
         if (object.equals(String.class)) {
             return context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(key, null);
@@ -47,13 +45,14 @@ public class PrefManager {
         return null;
     }
 
+
     /**
      * Use this function to store the preference's value
+     *
      * @param context Context of the android application running (getApplicationContext()) will help
-     * @param key The key for the desired preference
-     * @param value The value of the desired preference
+     * @param key     The key for the desired preference
+     * @param value   The value of the desired preference
      */
-
     public static void putPrefs(Context context, String key, Object value) {
         if (value.getClass().equals(String.class)) {
             context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).edit().putString(key, (String) value).commit();
@@ -64,8 +63,6 @@ public class PrefManager {
         } else if (value.getClass().equals(Float.class)) {
             context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).edit().putFloat(key, (Float) value).apply();
         }
-
     }
-
 }
 
