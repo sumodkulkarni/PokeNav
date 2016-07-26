@@ -36,10 +36,32 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/map_container"
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:id="@+id/map_relativeLayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:id="@+id/map_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <ImageView
+            android:id="@+id/map_marker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_blue_marker"/>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Submit"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

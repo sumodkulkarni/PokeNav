@@ -81,6 +81,9 @@ dependencies {
     compile "com.google.android.gms:play-services-auth:$mapsVersion"
     compile "com.google.android.gms:play-services-location:$mapsVersion"
     compile "com.google.android.gms:play-services-maps:$mapsVersion"
+
+    // Material Ripple Layout
+    compile 'com.balysv:material-ripple:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

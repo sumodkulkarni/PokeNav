@@ -57,7 +57,9 @@ public class LoginActivity extends InjectableActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_REGISTRATION_DONE, Boolean.class))) {
+        if (((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_REGISTRATION_DONE, Boolean.class))
+                &&
+                ((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_REGISTRATION_DONE, Boolean.class)) != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
