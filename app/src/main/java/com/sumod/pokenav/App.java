@@ -3,6 +3,9 @@ package com.sumod.pokenav;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+import com.parse.Parse;
+import com.parse.interceptors.ParseStethoInterceptor;
 import com.sumod.pokenav.model.PokemonHistory;
 
 import javax.inject.Inject;
@@ -42,17 +45,14 @@ public class App extends Application {
         applicationGraph = ObjectGraph.create().plus(new ActivityModule(this));
         App.inject(this);
 
-        api.searchPokemons(123, 10.1, 10.1, 8.1, null).enqueue(new Callback<PokemonHistory.SearchResults>() {
-            @Override
-            public void onResponse(Response<PokemonHistory.SearchResults> response) {
-
-            }
-
-
-            @Override
-            public void onFailure(Throwable t) {
-//                Log.e("a[[", t.getMessage());
-            }
-        });
+        // Setup parse
+        Stetho.initializeWithDefaults(this);
+        Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
+        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                .applicationId("pokenav")
+                .clientKey("")
+                .server("http://pokenav.schoolofandroid.com/parse")
+                .build()
+        );
     }
 }
