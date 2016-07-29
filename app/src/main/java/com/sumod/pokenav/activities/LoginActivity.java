@@ -206,19 +206,15 @@ public class LoginActivity extends InjectableActivity implements
             case REQUEST_CODE_FINE_LOCATION:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-
+                    // permission was granted, yay!
+                    moveOn();
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(relativeLayout, "Please grant location permissions for the app to perform.", Snackbar.LENGTH_LONG)
                             .setAction("Grant", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            askLocationPermissions();
+                            askLocationPermissionsAndMoveOn();
                         }
                     });
                     snackbar.show();
