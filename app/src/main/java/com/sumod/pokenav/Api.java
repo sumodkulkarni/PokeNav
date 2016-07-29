@@ -1,13 +1,11 @@
 package com.sumod.pokenav;
 
 
-import com.sumod.pokenav.model.PokemonHistory;
+import com.sumod.pokenav.model.PokemonLog;
 import com.sumod.pokenav.model.User;
 
 import java.io.IOException;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -69,10 +67,10 @@ public class Api {
          * @param longitude The long to search for.
          * @param distance  How far from the (lat, long) should we get the results for
          * @param page      And at what page should we get the results
-         * @return {@link PokemonHistory.SearchResults} of the pokemons found
+         * @return {@link PokemonLog.SearchResults} of the pokemons found
          */
         @GET("/pokemons")
-        Call<PokemonHistory.SearchResults> searchPokemons(
+        Call<PokemonLog.SearchResults> searchPokemons(
                 @Query("pokemonId") Number pokemonId,
                 @Query("lat") Double latitude,
                 @Query("long") Double longitude,
@@ -87,10 +85,10 @@ public class Api {
          * @param pokemonId The id of the pokemon
          * @param latitude  The latitude at which the pokemon was found.
          * @param longitude The longitude at which the pokemon was found.
-         * @return A {@link PokemonHistory} containing details of the find.
+         * @return A {@link PokemonLog} containing details of the find.
          */
         @POST("/pokemons")
-        Call<PokemonHistory> submitPokemon(
+        Call<PokemonLog> submitPokemon(
                 @Query("pokemonId") Number pokemonId,
                 @Query("lat") Double latitude,
                 @Query("long") Double longitude

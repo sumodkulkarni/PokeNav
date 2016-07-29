@@ -1,16 +1,23 @@
 package com.sumod.pokenav.model;
 
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import java.util.List;
 
 import lombok.Data;
 
 
 @Data
-public class Pokemon extends BaseModel {
-    Integer ndex;
-    String name;
-    String description;
-    String imageUrl;
-    List<String> types;
+@ParseClassName("Pokemons")
+public class Pokemon extends ParseObject {
+    Integer getNDex() {
+        return (Integer) get("ndex");
+    }
+
+
+    String getName() {
+        return (String) get("name");
+    }
 }

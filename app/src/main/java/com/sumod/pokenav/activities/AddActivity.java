@@ -20,10 +20,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseUser;
 import com.sumod.pokenav.Constants;
 import com.sumod.pokenav.R;
+import com.sumod.pokenav.model.PokemonLog;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -117,6 +120,22 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
                 .snippet("Press 'Done' after selecting position")
                 .position(myLatLng)
                 .draggable(true));*/
+
+    }
+
+
+    @Click(R.id.submit_button)
+    void submitButtonClick() {
+        addPokemon(12, 12, 1);
+    }
+
+
+    void addPokemon(double latitude, double longitude, int pokemonNdex) {
+        PokemonLog pokemonLog = new PokemonLog();
+        pokemonLog.setLocation(latitude, longitude);
+        pokemonLog.setCreator(ParseUser.getCurrentUser());
+//        pokemonLog.setPokemon();
+        pokemonLog.saveInBackground();
     }
 
 

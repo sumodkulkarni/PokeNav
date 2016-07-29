@@ -5,15 +5,15 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 import com.parse.Parse;
+import com.parse.ParseObject;
 import com.parse.interceptors.ParseStethoInterceptor;
-import com.sumod.pokenav.model.PokemonHistory;
+import com.sumod.pokenav.model.Pokemon;
+import com.sumod.pokenav.model.PokemonLog;
 
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 import lombok.Getter;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class App extends Application {
@@ -47,6 +47,8 @@ public class App extends Application {
 
         // Setup parse
         Stetho.initializeWithDefaults(this);
+        ParseObject.registerSubclass(Pokemon.class);
+        ParseObject.registerSubclass(PokemonLog.class);
         Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId("pokenav")
