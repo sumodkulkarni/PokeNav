@@ -2,6 +2,7 @@ package com.sumod.pokenav.activities;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,6 +26,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.sumod.pokenav.Api;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.activities.base.InjectableActivity;
@@ -32,9 +37,6 @@ import com.sumod.pokenav.model.User;
 import com.sumod.pokenav.utils.PrefManager;
 
 import javax.inject.Inject;
-
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class LoginActivity extends InjectableActivity implements
@@ -57,13 +59,8 @@ public class LoginActivity extends InjectableActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_REGISTRATION_DONE, Boolean.class))
-                &&
-                ((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_REGISTRATION_DONE, Boolean.class)) != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        // Check if the user already has been logged in
+        if (doesSessionTokenExist()) signInWithSessionToken();
 
         relativeLayout = (RelativeLayout) findViewById(R.id.login_RelativeLayout);
         mGoogleSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
@@ -78,12 +75,37 @@ public class LoginActivity extends InjectableActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
 
+//        mGoogleSignInButton.setSize(SignInButton.SIZE_STANDARD);
+        mGoogleSignInButton.setScopes(gso.getScopeArray());
         mGoogleSignInButton.setOnClickListener(this);
         mGoogleSignInButton.setSize(SignInButton.SIZE_WIDE);
+    }
+
+
+    private boolean doesSessionTokenExist() {
+        String session = PrefManager.getSessionToken(getApplicationContext());
+        return session != null && !session.isEmpty();
+    }
+
+
+    private void signInWithSessionToken() {
+        String session = PrefManager.getSessionToken(getApplicationContext());
+
+        if (session != null && !session.isEmpty()) {
+            // If the user was logged in before, then we login him in again and move him into the
+            // next activity.
+            final ProgressDialog progress = ProgressDialog.show(this, "Logging in",
+                    "This will only take a moment", true);
+
+            ParseUser.becomeInBackground(session, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    progress.dismiss();
+                    moveOn();
+                }
+            });
+        }
     }
 
 
@@ -98,8 +120,11 @@ public class LoginActivity extends InjectableActivity implements
 
 
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        if (doesSessionTokenExist()) signInWithSessionToken();
+        else {
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
     }
 
 
@@ -117,28 +142,41 @@ public class LoginActivity extends InjectableActivity implements
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Log.d(TAG, "blah" + result.getStatus());
+//        Log.d(TAG, "blah");
 
         if (result.isSuccess()) {
+            Log.d(TAG, "google oAuth authenticated!");
             // Signed in successfully, show authenticated UI.
             final GoogleSignInAccount acct = result.getSignInAccount();
 
-            currentUser.populateWithGoogle(acct);
-            apiService.login(currentUser).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Response<User> response) {
-                    // TODO: Login successful! Move to the next user here.
+            final ParseUser user = new ParseUser();
+            user.setUsername(acct.getEmail());
+            user.setPassword("1234");
+            user.setEmail(acct.getEmail());
+            user.put("name", acct.getDisplayName());
+            user.put("avatar", acct.getPhotoUrl().toString());
 
-                    PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_USER_NAME, acct.getDisplayName());
-                    PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_EMAIL, acct.getEmail());
-                    PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_REGISTRATION_DONE, true);
-                    PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_USER_PROFILE_PICTURE, acct.getPhotoUrl());
-                    askLocationPermissions();
-                }
+            final ProgressDialog progress = ProgressDialog.show(this, "Logging in",
+                    "This will only take a moment", true);
 
+            user.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    progress.dismiss();
 
-                @Override
-                public void onFailure(Throwable t) {
-                    // TODO: Our server denied access. Maybe this guy is banned?
+                    if (e == null) {
+                        Log.d(TAG, "prase signed up!");
+                        Log.d(TAG, "prase session token!" + user.getSessionToken());
+                        // Hooray! Let them use the app now.
+                        PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_SESSION_TOKEN, user.getSessionToken());
+
+                        askLocationPermissionsAndMoveOn();
+                    } else {
+                        // Sign up didn't succeed. Look at the ParseException
+                        // to figure out what went wrong
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             });
         } else {
@@ -168,19 +206,15 @@ public class LoginActivity extends InjectableActivity implements
             case REQUEST_CODE_FINE_LOCATION:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-
+                    // permission was granted, yay!
+                    moveOn();
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(relativeLayout, "Please grant location permissions for the app to perform.", Snackbar.LENGTH_LONG)
                             .setAction("Grant", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            askLocationPermissions();
+                            askLocationPermissionsAndMoveOn();
                         }
                     });
                     snackbar.show();
@@ -191,7 +225,6 @@ public class LoginActivity extends InjectableActivity implements
 
 
     private boolean isInternetAvailable() {
-
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -218,14 +251,19 @@ public class LoginActivity extends InjectableActivity implements
     }
 
 
-    private void askLocationPermissions() {
+    private void askLocationPermissionsAndMoveOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_FINE_LOCATION);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            finish();
-        }
+
+            // After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else moveOn();
+    }
+
+
+    private void moveOn() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
 

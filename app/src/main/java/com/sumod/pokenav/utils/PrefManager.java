@@ -14,7 +14,7 @@ public class PrefManager {
      * Preferences
      * Add your preferences here
      */
-
+    public static String PREF_SESSION_TOKEN = "pref_session_token";
     public static String PREF_USER_NAME = "pref_username";
     public static String PREF_EMAIL = "pref_email";
     public static String PREF_USER_PROFILE_PICTURE = "pref_user_profile_pic";
@@ -63,6 +63,11 @@ public class PrefManager {
         } else if (value.getClass().equals(Float.class)) {
             context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).edit().putFloat(key, (Float) value).apply();
         }
+    }
+
+
+    public static String getSessionToken(Context context) {
+        return (String) PrefManager.getPrefs(context, PrefManager.PREF_SESSION_TOKEN, String.class);
     }
 }
 
