@@ -1,5 +1,6 @@
 package com.sumod.pokenav.fragments;
 
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,13 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.parse.ParseUser;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.adapter.NavigationDrawerAdapter;
 import com.sumod.pokenav.model.NavDrawerItem;
-import com.sumod.pokenav.utils.PrefManager;
 
-
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,17 +40,19 @@ public class FragmentDrawer extends Fragment {
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
 
+
     public FragmentDrawer() {
 
     }
+
 
     public void setDrawerListener(FragmentDrawerListener listener) {
         this.drawerListener = listener;
     }
 
+
     public static List<NavDrawerItem> getData() {
         List<NavDrawerItem> data = new ArrayList<>();
-
 
         // preparing navigation drawer items
         for (int i = 0; i < titles.length; i++) {
@@ -62,6 +63,7 @@ public class FragmentDrawer extends Fragment {
         return data;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class FragmentDrawer extends Fragment {
         // drawer labels
         titles = getActivity().getResources().getStringArray(R.array.nav_drawer_labels);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,15 +81,12 @@ public class FragmentDrawer extends Fragment {
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         imageView = (ImageView) layout.findViewById(R.id.drawer_imageView);
 
-        if (PrefManager.getPrefs(getContext(), PrefManager.PREF_USER_PROFILE_PICTURE, String.class) != null){
-
-            Uri imageUri = Uri.parse(PrefManager.getPrefs(getContext(), PrefManager.PREF_USER_PROFILE_PICTURE, String.class).toString());
+        if (ParseUser.getCurrentUser().get("avatar") != null) {
+            Uri imageUri = Uri.parse((String) ParseUser.getCurrentUser().get("avatar"));
             imageView.setImageURI(imageUri);
             Log.d(TAG, "Profile pic applied");
+        } else Log.d(TAG, "Profile pic null");
 
-        } else {
-            Log.d(TAG, "Profile pic null");
-        }
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -96,6 +96,7 @@ public class FragmentDrawer extends Fragment {
                 drawerListener.onDrawerItemSelected(view, position);
                 mDrawerLayout.closeDrawer(containerView);
             }
+
 
             @Override
             public void onLongClick(View view, int position) {
@@ -117,11 +118,13 @@ public class FragmentDrawer extends Fragment {
                 getActivity().invalidateOptionsMenu();
             }
 
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getActivity().invalidateOptionsMenu();
             }
+
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -140,16 +143,18 @@ public class FragmentDrawer extends Fragment {
 
     }
 
+
     public static interface ClickListener {
         public void onClick(View view, int position);
 
         public void onLongClick(View view, int position);
     }
 
-    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
+    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         private GestureDetector gestureDetector;
         private ClickListener clickListener;
+
 
         public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
             this.clickListener = clickListener;
@@ -158,6 +163,7 @@ public class FragmentDrawer extends Fragment {
                 public boolean onSingleTapUp(MotionEvent e) {
                     return true;
                 }
+
 
                 @Override
                 public void onLongPress(MotionEvent e) {
@@ -169,6 +175,7 @@ public class FragmentDrawer extends Fragment {
             });
         }
 
+
         @Override
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
@@ -179,17 +186,18 @@ public class FragmentDrawer extends Fragment {
             return false;
         }
 
+
         @Override
         public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         }
+
 
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-
-
     }
+
 
     public interface FragmentDrawerListener {
         public void onDrawerItemSelected(View view, int position);

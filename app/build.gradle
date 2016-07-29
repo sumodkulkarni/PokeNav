@@ -78,9 +78,11 @@ dependencies {
     // Project Lombok
     compile "org.projectlombok:lombok:$lombokVersion"
 
+    // Google APIs
     compile "com.google.android.gms:play-services-auth:$mapsVersion"
     compile "com.google.android.gms:play-services-location:$mapsVersion"
     compile "com.google.android.gms:play-services-maps:$mapsVersion"
+    compile 'com.google.maps.android:android-maps-utils:0.4.+'
 
     // Parse!
     compile 'com.parse:parse-android:1.13.1'
@@ -89,6 +91,7 @@ dependencies {
 
 	// Material Ripple Layout
     compile 'com.balysv:material-ripple:1.0.2'
+    compile 'com.android.support:support-v4:23.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
