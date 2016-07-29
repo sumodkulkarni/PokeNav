@@ -7,12 +7,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sumod.pokenav.Constants;
@@ -24,9 +31,12 @@ import org.androidannotations.annotations.ViewById;
 
 
 @EActivity(R.layout.activity_add)
-public class AddActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class AddActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnCameraChangeListener {
 
     @ViewById(R.id.add_map_title) TextView titleView;
+    @ViewById(R.id.map_container) FrameLayout mapFrameLayout;
+    @ViewById(R.id.map_relativeLayout) RelativeLayout relativeLayout;
+    @ViewById(R.id.submit_button) Button submitButton;
 
     private static final String TAG = "AddActivity";
     private SupportMapFragment supportMapFragment;
@@ -54,6 +64,14 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
     @AfterViews
     protected void afterViews() {
         setUpTitleView(whatToadd);
+
+        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                submitButton.setVisibility(View.GONE);
+                return false;
+            }
+        });
     }
 
 
@@ -84,9 +102,12 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setMyLocationEnabled(true);
+        googleMap.setOnCameraChangeListener(this);
 
         LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -95,10 +116,17 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 13));
-        googleMap.addMarker(new MarkerOptions()
+        /*googleMap.addMarker(new MarkerOptions()
                 .title(markerTitle)
                 .snippet("Press 'Done' after selecting position")
                 .position(myLatLng)
-                .draggable(true));
+                .draggable(true));*/
+    }
+
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        submitButton.setVisibility(View.VISIBLE);
+        Log.d(TAG, cameraPosition.target.latitude + "/" + cameraPosition.target.longitude);
     }
 }

@@ -68,7 +68,6 @@ public class LoginActivity extends InjectableActivity implements
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
-//                .requestScopes()
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -201,7 +200,31 @@ public class LoginActivity extends InjectableActivity implements
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_FINE_LOCATION) moveOn();
+
+        switch (requestCode){
+
+            case REQUEST_CODE_FINE_LOCATION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    Snackbar snackbar = Snackbar
+                            .make(relativeLayout, "Please grant location permissions for the app to perform.", Snackbar.LENGTH_LONG)
+                            .setAction("Grant", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            askLocationPermissions();
+                        }
+                    });
+                    snackbar.show();
+                }
+                break;
+        }
     }
 
 
