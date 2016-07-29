@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +20,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.sumod.pokenav.Constants;
 import com.sumod.pokenav.R;
 
@@ -100,8 +98,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
             supportFragmentManager.beginTransaction().show(supportMapFragment).commit();
         }
     }
-
-
 
 
     @Override
