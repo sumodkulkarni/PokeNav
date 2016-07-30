@@ -127,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 fragment = new ChatFragment();
                 title = getString(R.string.title_chat);
                 break;
+            case 3:
+                drawerFragment.showFeedback();
+                break;
             default:
                 break;
         }

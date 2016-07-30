@@ -7,6 +7,7 @@ import com.facebook.stetho.Stetho;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.interceptors.ParseStethoInterceptor;
+import com.sumod.pokenav.model.Feedback;
 import com.sumod.pokenav.model.Pokemon;
 import com.sumod.pokenav.model.PokemonLog;
 
@@ -44,6 +45,7 @@ public class App extends Application {
         Stetho.initializeWithDefaults(this);
         ParseObject.registerSubclass(Pokemon.class);
         ParseObject.registerSubclass(PokemonLog.class);
+        ParseObject.registerSubclass(Feedback.class);
         Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId(PARSE_APPID)

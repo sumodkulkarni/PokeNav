@@ -10,13 +10,27 @@
     <string name="nav_item_home">Home</string>
     <string name="nav_item_map">PokeMap</string>
     <string name="nav_item_item_chat">Chat</string>
+    <string name="nav_item_feedback">Feedback</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_map</item>
         <item>@string/nav_item_item_chat</item>
+        <item>@string/nav_item_feedback</item>
     </string-array>
+
+    <string name="feedback_note">Your feedback will help us find more Pokemons for you!</string>
+    <string name="feedback_message_required">A message is required</string>
+    <string name="feedback_comment_required">Comment is required</string>
+    <string name="feedback_no_playstore">No Play Store app found</string>
+    <string name="feedback_rate_app">Rate the app</string>
+    <string name="feedback_or">or</string>
+    <string name="feedback_leave_feedback">Leave feedback</string>
+    <string name="feedback_comment_hint">Your message</string>
+    <string name="feedback_send">Send Feedback</string>
+    <string name="feedback_sent">Feedback sent. Thank you!</string>
+    <string name="feedback_failed">Failed to send, please try again</string>
 
     <string name="title_home">Home</string>
     <string name="title_map">PokeMap</string>

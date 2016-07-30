@@ -1,10 +1,14 @@
 package com.sumod.pokenav.fragments;
 
 
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,18 +20,28 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.sumod.pokenav.BuildConfig;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.adapter.NavigationDrawerAdapter;
+import com.sumod.pokenav.model.Feedback;
 import com.sumod.pokenav.model.NavDrawerItem;
+import com.sumod.pokenav.utils.AlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 
-public class FragmentDrawer extends Fragment {
+
+public class FragmentDrawer extends InjectableFragment {
 
     private static String TAG = FragmentDrawer.class.getSimpleName();
 
@@ -39,6 +53,11 @@ public class FragmentDrawer extends Fragment {
     private View containerView;
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
+    private Dialog feedbackDialog;
+
+    @Inject AlertDialogBuilder alertDialogBuilder;
+
+    static final String PLAY_STORE_URL = "market://details?id=" + BuildConfig.APPLICATION_ID;
 
 
     public FragmentDrawer() {
@@ -76,6 +95,8 @@ public class FragmentDrawer extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
@@ -141,6 +162,91 @@ public class FragmentDrawer extends Fragment {
             }
         });
 
+    }
+
+
+    public void showFeedback() {
+        showFeedbackDialog(getLayoutInflater(null).inflate(R.layout.dialog_feedback, mDrawerLayout, false));
+        closeDrawers();
+    }
+
+
+    void closeDrawers() {
+        mDrawerLayout.closeDrawers();
+    }
+
+
+    private void showFeedbackDialog(View dialogView) {
+        final TextView feedbackNote = (TextView) dialogView.findViewById(R.id.feedback_note);
+        final TextInputLayout bodyLayout = (TextInputLayout)
+                dialogView.findViewById(R.id.textinput_body);
+        final EditText body = (EditText) dialogView.findViewById(R.id.edittext_body);
+        final View sendButton = dialogView.findViewById(R.id.feedback_button);
+
+        feedbackNote.setText(R.string.feedback_note);
+        feedbackDialog = alertDialogBuilder
+                .init(getContext())
+                .setView(dialogView)
+                .create();
+
+        dialogView.findViewById(R.id.button_rate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPlayStore();
+                feedbackDialog.dismiss();
+            }
+        });
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bodyLayout.setErrorEnabled(false);
+                if (body.length() == 0) {
+                    bodyLayout.setError(getString(R.string.feedback_message_required));
+                    return;
+                }
+
+                sendButton.setEnabled(false);
+
+                Feedback feedback = new Feedback();
+                feedback.setMessage(body.getText().toString());
+                feedback.setSubmittedBy(ParseUser.getCurrentUser());
+                feedback.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        boolean success = e == null;
+
+                        Toast.makeText(getContext(),
+                                success ? R.string.feedback_sent : R.string.feedback_failed,
+                                Toast.LENGTH_SHORT)
+                                .show();
+
+                        if (feedbackDialog == null || !feedbackDialog.isShowing()) return;
+
+                        if (success) feedbackDialog.dismiss();
+                        else feedbackDialog.findViewById(R.id.feedback_button).setEnabled(true);
+                    }
+                });
+            }
+        });
+        feedbackDialog.show();
+    }
+
+
+    public void openPlayStore() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE_URL));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        else intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        try {
+            getContext().startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getContext(), R.string.feedback_no_playstore, Toast.LENGTH_SHORT).show();
+        }
     }
 
 
