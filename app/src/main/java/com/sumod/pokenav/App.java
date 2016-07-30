@@ -15,7 +15,7 @@ import lombok.Getter;
 
 
 public class App extends Application {
-    public final static String PARSE_HOST = "http://pokenav.schoolofandroid.com/";
+    public final static String PARSE_HOST = "http://pokenav.schoolofandroid.com/parse";
     public final static String PARSE_APPID = "pokenav";
 
     @Getter static ObjectGraph applicationGraph;
