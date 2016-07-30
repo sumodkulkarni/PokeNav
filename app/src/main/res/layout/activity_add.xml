@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.sumod.pokenav.activities.AddActivity"
     android:orientation="vertical">
 
@@ -11,7 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/primary"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:padding="@dimen/activity_horizontal_margin"
+        android:elevation="5dp">
 
         <TextView
             android:id="@+id/add_map_title"
@@ -24,16 +26,6 @@
             android:textColor="@color/textColorPrimary"
             android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:id="@+id/add_map_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(Long Press to drag)"
-            android:textSize="14sp"
-            android:textColor="@color/textColorPrimary"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"/>
-
     </LinearLayout>
 
     <RelativeLayout
@@ -45,22 +37,39 @@
         <FrameLayout
             android:id="@+id/map_container"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent" >
+
+        </FrameLayout>
+
+        <Space
+            android:id="@+id/centre_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <ImageView
             android:id="@+id/map_marker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/centre_space"
             android:src="@mipmap/ic_blue_marker"/>
 
         <Button
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="5dp"
             android:layout_alignParentBottom="true"
             android:text="Submit"
-            android:visibility="gone"/>
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:background="@color/primary"
+            android:visibility="gone" />
+
 
     </RelativeLayout>
 
