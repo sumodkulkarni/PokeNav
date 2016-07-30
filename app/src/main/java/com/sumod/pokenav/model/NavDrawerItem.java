@@ -1,5 +1,6 @@
 package com.sumod.pokenav.model;
 
+
 /**
  * Created by sumodkulkarni on 16/7/16.
  */
@@ -12,22 +13,27 @@ public class NavDrawerItem {
 
     }
 
+
     public NavDrawerItem(boolean showNotify, String title) {
         this.showNotify = showNotify;
         this.title = title;
     }
 
+
     public boolean isShowNotify() {
         return showNotify;
     }
+
 
     public void setShowNotify(boolean showNotify) {
         this.showNotify = showNotify;
     }
 
+
     public String getTitle() {
         return title;
     }
+
 
     public void setTitle(String title) {
         this.title = title;
