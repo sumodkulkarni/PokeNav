@@ -116,7 +116,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         Location location = service.getLastKnownLocation(provider);
         LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 13));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 18));
         /*googleMap.addMarker(new MarkerOptions()
                 .title(markerTitle)
                 .snippet("Press 'Done' after selecting position")
