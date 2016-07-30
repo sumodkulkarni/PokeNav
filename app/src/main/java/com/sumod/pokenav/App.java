@@ -10,17 +10,13 @@ import com.parse.interceptors.ParseStethoInterceptor;
 import com.sumod.pokenav.model.Pokemon;
 import com.sumod.pokenav.model.PokemonLog;
 
-import javax.inject.Inject;
-
 import dagger.ObjectGraph;
 import lombok.Getter;
 
 
 public class App extends Application {
-    //    public final static String HOST = "http://192.168.1.101:3000/";
-    public final static String HOST = "http://pokenav.schoolofandroid.com/";
-    public final static String JWT_KEY = "c3Vtb2RrdWxrYXJuaQ==";
-
+    public final static String PARSE_HOST = "http://pokenav.schoolofandroid.com/";
+    public final static String PARSE_APPID = "pokenav";
 
     @Getter static ObjectGraph applicationGraph;
 
@@ -48,12 +44,12 @@ public class App extends Application {
         Stetho.initializeWithDefaults(this);
         ParseObject.registerSubclass(Pokemon.class);
         ParseObject.registerSubclass(PokemonLog.class);
+        Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                .applicationId("pokenav")
+                .applicationId(PARSE_APPID)
                 .clientKey("")
-                .server("http://pokenav.schoolofandroid.com/parse")
+                .server(PARSE_HOST)
                 .build()
         );
-        Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
     }
 }
