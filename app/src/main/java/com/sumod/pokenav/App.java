@@ -23,7 +23,6 @@ public class App extends Application {
 
 
     @Getter static ObjectGraph applicationGraph;
-    @Inject Api.ApiService api;
 
 
     public static <T> T inject(T instance) {
@@ -49,12 +48,12 @@ public class App extends Application {
         Stetho.initializeWithDefaults(this);
         ParseObject.registerSubclass(Pokemon.class);
         ParseObject.registerSubclass(PokemonLog.class);
-        Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId("pokenav")
                 .clientKey("")
                 .server("http://pokenav.schoolofandroid.com/parse")
                 .build()
         );
+        Parse.addParseNetworkInterceptor(new ParseStethoInterceptor());
     }
 }

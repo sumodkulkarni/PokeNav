@@ -1,7 +1,10 @@
 package com.sumod.pokenav.model;
 
 
-public class BaseModel {
+import com.parse.ParseObject;
+
+
+public class BaseModel extends ParseObject {
     protected String _id;
 
 

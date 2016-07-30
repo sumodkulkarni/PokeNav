@@ -12,8 +12,11 @@ import lombok.Data;
 
 
 @Data
-@ParseClassName("PokemonLogs")
+@ParseClassName(PokemonLog.PARSE_CLASSNAME)
 public class PokemonLog extends ParseObject {
+    public static final String PARSE_CLASSNAME = "PokemonLogs";
+
+
     public String getDisplayName() {
         return getString("displayName");
     }

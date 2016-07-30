@@ -30,28 +30,20 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import com.sumod.pokenav.Api;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.activities.base.InjectableActivity;
-import com.sumod.pokenav.model.User;
 import com.sumod.pokenav.utils.PrefManager;
-
-import javax.inject.Inject;
 
 
 public class LoginActivity extends InjectableActivity implements
         View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int REQUEST_CODE_FINE_LOCATION = 100;
     private static int RC_SIGN_IN = 1331;
     private static String TAG = "LoginActivity";
     private GoogleApiClient mGoogleApiClient;
     private RelativeLayout relativeLayout;
     private SignInButton mGoogleSignInButton;
-
-    private static final int REQUEST_CODE_FINE_LOCATION = 100;
-
-    @Inject Api.ApiService apiService;
-    @Inject User currentUser;
 
 
     @Override
@@ -201,7 +193,7 @@ public class LoginActivity extends InjectableActivity implements
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
 
-        switch (requestCode){
+        switch (requestCode) {
 
             case REQUEST_CODE_FINE_LOCATION:
                 if (grantResults.length > 0
@@ -212,11 +204,11 @@ public class LoginActivity extends InjectableActivity implements
                     Snackbar snackbar = Snackbar
                             .make(relativeLayout, "Please grant location permissions for the app to perform.", Snackbar.LENGTH_LONG)
                             .setAction("Grant", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            askLocationPermissionsAndMoveOn();
-                        }
-                    });
+                                @Override
+                                public void onClick(View view) {
+                                    askLocationPermissionsAndMoveOn();
+                                }
+                            });
                     snackbar.show();
                 }
                 break;

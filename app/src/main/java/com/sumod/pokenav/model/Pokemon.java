@@ -4,14 +4,15 @@ package com.sumod.pokenav.model;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-import java.util.List;
-
 import lombok.Data;
 
 
 @Data
-@ParseClassName("Pokemons")
+@ParseClassName(Pokemon.PARSE_CLASSNAME)
 public class Pokemon extends ParseObject {
+    public static final String PARSE_CLASSNAME = "Pokemons";
+
+
     Integer getNDex() {
         return (Integer) get("ndex");
     }
