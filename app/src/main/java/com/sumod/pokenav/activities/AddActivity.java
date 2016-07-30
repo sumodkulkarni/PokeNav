@@ -45,6 +45,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private int whatToadd;
     private String markerTitle;
+    private GoogleMap googleMap;
 
 
     @Override
@@ -105,6 +106,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnCameraChangeListener(this);
 
@@ -126,7 +128,10 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Click(R.id.submit_button)
     void submitButtonClick() {
-        addPokemon(12, 12, 1);
+        LatLng target = googleMap.getCameraPosition().target;
+
+        // TODO: Add pokemon's nDex in here
+        addPokemon(target.latitude, target.longitude, 1);
     }
 
 
