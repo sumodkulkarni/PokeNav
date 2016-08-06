@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.parse.ParseUser;
 import com.sumod.pokenav.Constants;
 import com.sumod.pokenav.R;
-import com.sumod.pokenav.activities.AddActivity;
 import com.sumod.pokenav.activities.AddActivity_;
 import com.sumod.pokenav.utils.PrefManager;
 
@@ -34,14 +34,17 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton fab2;
     private FloatingActionButton fab3;
 
+
     public HomeFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,17 +52,18 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         Log.d(TAG, "On View Created Launched!");
 
-        if ((Boolean) PrefManager.getPrefs(getContext(), PrefManager.PREF_MAIN_ACT_LAUNCH, Boolean.class)){
+        if ((Boolean) PrefManager.getPrefs(getContext(), PrefManager.PREF_MAIN_ACT_LAUNCH, Boolean.class)) {
             Log.d(TAG, "If statement passed");
             coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.frag_home_coordinatorLayout);
-            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Welcome, " + PrefManager.getPrefs(getContext(), PrefManager.PREF_USER_NAME, String.class) + "!",
-                            Snackbar.LENGTH_LONG);
+            String userName = (String) ParseUser.getCurrentUser().get("name");
+            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Welcome, " + userName + "!", Snackbar.LENGTH_LONG);
             snackbar.show();
             PrefManager.putPrefs(getContext(), PrefManager.PREF_MAIN_ACT_LAUNCH, false);
         }
@@ -72,6 +76,7 @@ public class HomeFragment extends Fragment {
         fabAdd.setClosedOnTouchOutside(true);
 
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -108,10 +113,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
+
 
     @Override
     public void onDetach() {

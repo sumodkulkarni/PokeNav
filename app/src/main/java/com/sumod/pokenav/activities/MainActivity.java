@@ -21,18 +21,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.fragments.ChatFragment;
 import com.sumod.pokenav.fragments.FragmentDrawer;
-import com.sumod.pokenav.fragments.HeatmapFragment;
 import com.sumod.pokenav.fragments.HeatmapFragment_;
 import com.sumod.pokenav.fragments.HomeFragment;
 import com.sumod.pokenav.utils.PrefManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener, OnMapReadyCallback {
@@ -57,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         PrefManager.putPrefs(this, PrefManager.PREF_MAIN_ACT_LAUNCH, true);
 
-        Log.d(TAG, String.valueOf((Boolean) PrefManager.getPrefs(this, PrefManager.PREF_MAIN_ACT_LAUNCH, Boolean.class)));
+        Log.d(TAG, String.valueOf(PrefManager.getPrefs(this, PrefManager.PREF_MAIN_ACT_LAUNCH, Boolean.class)));
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
