@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sumod.pokenav.fragments.SubmitFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_selectTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Time"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"/>
+
+        <EditText
+            android:id="@+id/ed_multiSelect_filter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/action_search"
+            android:inputType="text"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <requestFocus />
+        </EditText>
+
+        <ListView
+            android:id="@+id/multiSelect_listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:cacheColorHint="@null"
+            android:fadeScrollbars="true"
+            android:fastScrollEnabled="true"
+            android:textFilterEnabled="true" />
+
+        <TextView
+            android:id="@+id/tv_searchNotFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#EE0000"
+            android:visibility="gone" />
+
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

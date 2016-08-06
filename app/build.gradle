@@ -61,13 +61,10 @@ dependencies {
     provided "com.squareup.dagger:dagger-compiler:$daggerVersion"
 
     // Gson for JSON serializing
-    compile 'com.google.code.gson:gson:2.3.1'
+    
 
     // Library for Floating Action Buttons
-    compile 'com.github.clans:fab:1.6.4'
-
-    // Picasso for loading images
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    
 
     // Project Lombok
     compile "org.projectlombok:lombok:$lombokVersion"
@@ -76,17 +73,17 @@ dependencies {
     compile "com.google.android.gms:play-services-auth:$mapsVersion"
     compile "com.google.android.gms:play-services-location:$mapsVersion"
     compile "com.google.android.gms:play-services-maps:$mapsVersion"
-    compile 'com.google.maps.android:android-maps-utils:0.4.+'
-
+    
     // Parse!
-    compile 'com.parse.bolts:bolts-android:1.+'
-    compile 'com.parse:parse-android:1.13.1'
     debugCompile 'com.facebook.stetho:stetho:1.3.1'
     debugCompile 'com.parse:parseinterceptors:0.0.2'
 
 	// Material Ripple Layout
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.github.clans:fab:1.6.4'
+    compile 'com.google.maps.android:android-maps-utils:0.4.+'
+    compile 'com.parse:parse-android:1.13.1'
     compile 'com.balysv:material-ripple:1.0.2'
-    compile 'com.android.support:support-v4:23.3.0'
-}
+    compile 'com.android.support:support-v4:23.4.0'}
 
 apply plugin: 'com.google.gms.google-services'

@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -117,21 +119,17 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 18));
-        /*googleMap.addMarker(new MarkerOptions()
-                .title(markerTitle)
-                .snippet("Press 'Done' after selecting position")
-                .position(myLatLng)
-                .draggable(true));*/
 
     }
 
 
     @Click(R.id.submit_button)
     void submitButtonClick() {
-        LatLng target = googleMap.getCameraPosition().target;
+        Toast.makeText(AddActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+        /*LatLng target = googleMap.getCameraPosition().target;
 
         // TODO: Add pokemon's nDex in here
-        addPokemon(target.latitude, target.longitude, 1);
+        addPokemon(target.latitude, target.longitude, 1);*/
     }
 
 
