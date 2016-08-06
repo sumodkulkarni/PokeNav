@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 import com.sumod.pokenav.BuildConfig;
 import com.sumod.pokenav.R;
 import com.sumod.pokenav.adapter.NavigationDrawerAdapter;
@@ -104,8 +105,9 @@ public class FragmentDrawer extends InjectableFragment {
 
         if (ParseUser.getCurrentUser().get("avatar") != null) {
             Uri imageUri = Uri.parse((String) ParseUser.getCurrentUser().get("avatar"));
-            imageView.setImageURI(imageUri);
-            Log.d(TAG, "Profile pic applied");
+            Picasso.with(getContext()).load(imageUri).into(imageView);
+//            imageView.setImageURI(imageUri);
+            Log.d(TAG, "Profile pic appliedll");
         } else Log.d(TAG, "Profile pic null");
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
@@ -167,15 +169,16 @@ public class FragmentDrawer extends InjectableFragment {
 
     public void showFeedback() {
         showFeedbackDialog(getLayoutInflater(null).inflate(R.layout.dialog_feedback, mDrawerLayout, false));
-        closeDrawers();
-    }
-
-
-    void closeDrawers() {
         mDrawerLayout.closeDrawers();
     }
 
 
+    /**
+     * Function to handle the feedback form. It shows the dialog, validates it and send a request
+     * to the Parse server.
+     *
+     * @param dialogView
+     */
     private void showFeedbackDialog(View dialogView) {
         final TextView feedbackNote = (TextView) dialogView.findViewById(R.id.feedback_note);
         final TextInputLayout bodyLayout = (TextInputLayout)
@@ -211,6 +214,7 @@ public class FragmentDrawer extends InjectableFragment {
                 Feedback feedback = new Feedback();
                 feedback.setMessage(body.getText().toString());
                 feedback.setSubmittedBy(ParseUser.getCurrentUser());
+                feedback.setACL(ParseUser.getCurrentUser().getACL());
                 feedback.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
