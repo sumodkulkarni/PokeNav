@@ -44,6 +44,7 @@ public class LoginActivity extends InjectableActivity implements
     private GoogleApiClient mGoogleApiClient;
     private RelativeLayout relativeLayout;
     private SignInButton mGoogleSignInButton;
+    private ProgressDialog progress;
 
 
     @Override
@@ -144,34 +145,43 @@ public class LoginActivity extends InjectableActivity implements
 
             final ParseUser user = new ParseUser();
             user.setUsername(acct.getEmail());
-            user.setPassword("1234");
+            user.setPassword(acct.getEmail());
             user.setEmail(acct.getEmail());
+
             user.put("name", acct.getDisplayName());
             user.put("avatar", acct.getPhotoUrl().toString());
 
-            final ProgressDialog progress = ProgressDialog.show(this, "Logging in",
+            progress = ProgressDialog.show(this, "Logging in",
                     "This will only take a moment", true);
 
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
-                    progress.dismiss();
 
-                    if (e == null) {
-                        Log.d(TAG, "prase signed up!");
-                        Log.d(TAG, "prase session token!" + user.getSessionToken());
-                        // Hooray! Let them use the app now.
-                        PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_SESSION_TOKEN, user.getSessionToken());
 
-                        askLocationPermissionsAndMoveOn();
-                    } else {
-                        // Sign up didn't succeed. Look at the ParseException
-                        // to figure out what went wrong
-                        Log.e(TAG, e.getMessage());
-                        e.printStackTrace();
+                    if (e == null) onLoginOrSignup(user);
+                    else {
+                        if (e.getCode() == 202) { // user is already signed up
+                            ParseUser.logInInBackground(acct.getEmail(), acct.getEmail(), new LogInCallback() {
+                                @Override
+                                public void done(ParseUser user, ParseException e) {
+                                    if (e == null) onLoginOrSignup(user);
+                                    else {
+                                        progress.dismiss();
+                                        Log.e(TAG, e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        } else {
+                            progress.dismiss();
+                            Log.e(TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
         } else {
+
             // Signed out, show unauthenticated UI.
             Toast.makeText(this, "Oops! Somethings not right. Please try again later",
                     Toast.LENGTH_SHORT).show();
@@ -179,9 +189,26 @@ public class LoginActivity extends InjectableActivity implements
     }
 
 
+    /**
+     * This function is called whenever the user successfully signs up or logins into the Parse
+     * server
+     *
+     * @param user The logged in user from Parse.
+     */
+    private void onLoginOrSignup(ParseUser user) {
+        progress.dismiss();
+
+        Log.d(TAG, "prase signed up!");
+        Log.d(TAG, "prase session token!" + user.getSessionToken());
+
+        // Hooray! Let them use the app now.
+        PrefManager.putPrefs(getApplicationContext(), PrefManager.PREF_SESSION_TOKEN, user.getSessionToken());
+        askLocationPermissionsAndMoveOn();
+    }
+
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
         Snackbar snackbar = Snackbar
                 .make(relativeLayout, "Something's wrong. Please try after sometime", Snackbar.LENGTH_LONG);
         snackbar.show();
